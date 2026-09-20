@@ -1,0 +1,25 @@
+# Caddy config for the GCP VM.
+#
+# Caddy obtains and renews a Let's Encrypt certificate for this hostname on its
+# own; there is no certbot and no renewal cron to maintain.
+#
+# The hostname is a sslip.io address: 34-29-207-92.sslip.io resolves to
+# 34.29.207.92 with no DNS records to create. A real CA-signed certificate
+# means Android trusts the connection with no network_security_config.xml and
+# no certificate shipped inside the APK.
+#
+# If the VM's external IP ever changes, this hostname, the ACME certificate and
+# the APK's API_BASE_URL all break together -- which is why the IP is reserved
+# as static.
+
+34-29-207-92.sslip.io {
+	encode zstd gzip
+
+	# The Node process binds 127.0.0.1:3000 (HOST=127.0.0.1), so this proxy is
+	# the only route to it. Port 3000 is closed at the GCP firewall as well.
+	reverse_proxy 127.0.0.1:3000
+
+	log {
+		output file /var/log/caddy/access.log
+	}
+}

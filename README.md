@@ -149,6 +149,19 @@ npm run typecheck
    docker compose down
    ```
 
+## Cloud deployment
+
+The backend runs on a Google Cloud VM behind Caddy, which terminates HTTPS with
+an auto-renewing Let's Encrypt certificate:
+
+**`https://34-29-207-92.sslip.io`**
+
+Port 3000 is not publicly reachable — the firewall admits only 80/443 and the
+Node process binds loopback. Full runbook, including firewall and certificate
+setup: [deploy/README.md](deploy/README.md).
+
+---
+
 ## Additional Setup
 
 <a name="google-oauth-setup"></a>

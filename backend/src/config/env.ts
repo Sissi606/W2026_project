@@ -35,6 +35,13 @@ function parsePort(value: string | undefined): number {
 
 export const env = {
   port: parsePort(process.env.PORT),
+
+  // Which interface to bind. Behind a reverse proxy set HOST=127.0.0.1 so the
+  // Node process is unreachable from outside the machine and the proxy is the
+  // only way in. Docker needs 0.0.0.0, since the port is published from the
+  // container, so that stays the default.
+  host: optional(process.env.HOST, '0.0.0.0'),
+
   nodeEnv: optional(process.env.NODE_ENV, 'development'),
 
   // Signs this app's own session tokens. Unrelated to Google's signing keys.

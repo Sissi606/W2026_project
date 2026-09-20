@@ -1,0 +1,37 @@
+# systemd unit for the backend on the GCP VM.
+#
+# Install:  sudo cp deploy/cpen321-backend.service /etc/systemd/system/
+#           sudo systemctl daemon-reload
+#           sudo systemctl enable --now cpen321-backend
+#
+# Replacing `npm run dev` with this matters for more than tidiness: a process
+# started from an SSH session dies when that session ends, so the demo would
+# stop working the moment the browser tab closed.
+
+[Unit]
+Description=CPEN 321 backend
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=qilinjia2004
+WorkingDirectory=/home/qilinjia2004/W2026_project/backend
+
+# Bind loopback only: Caddy reverse-proxies to this, and nothing else can reach
+# it even if a firewall rule is later opened by mistake.
+Environment=HOST=127.0.0.1
+Environment=NODE_ENV=production
+
+# Runs the compiled output, so `npm run build` must have been run first.
+ExecStart=/usr/bin/npm start
+Restart=on-failure
+RestartSec=5
+
+# The process needs no write access outside its own directory.
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=full
+
+[Install]
+WantedBy=multi-user.target
