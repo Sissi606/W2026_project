@@ -60,4 +60,8 @@ export const env = {
   // Set this when the host cannot discover its own public address, or to skip
   // the outbound lookup entirely. Empty means "ask an external echo service".
   serverPublicIp: optional(process.env.SERVER_PUBLIC_IP, ''),
+
+  // The course-provided pixel stream that Button 2 relays. Configurable
+  // because the address is outside our control and may change.
+  courseWsUrl: optional(process.env.COURSE_WS_URL, 'wss://8.229.22.124'),
 } as const;

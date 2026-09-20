@@ -25,6 +25,7 @@ import com.example.cpen321application.R
 @Composable
 fun HomeScreen(
     onButtonOneClick: () -> Unit,
+    onButtonTwoClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -53,8 +54,8 @@ fun HomeScreen(
         )
         HomeButton(
             label = stringResource(R.string.button_two),
-            onClick = {},
-            enabled = false,
+            onClick = onButtonTwoClick,
+            enabled = true,
             testTag = "button_two"
         )
         HomeButton(

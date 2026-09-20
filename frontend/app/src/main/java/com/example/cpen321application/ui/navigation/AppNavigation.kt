@@ -9,20 +9,25 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.cpen321application.auth.GoogleSignInHelper
+import com.example.cpen321application.data.remote.PixelSocketClient
 import com.example.cpen321application.data.repository.AppRepository
 import com.example.cpen321application.ui.home.HomeScreen
 import com.example.cpen321application.ui.login.LoginScreen
 import com.example.cpen321application.ui.login.LoginViewModel
+import com.example.cpen321application.ui.pixels.PixelArtScreen
+import com.example.cpen321application.ui.pixels.PixelArtViewModel
 
 object Routes {
     const val HOME = "home"
     const val LOGIN = "login"
+    const val PIXELS = "pixels"
 }
 
 @Composable
 fun AppNavigation(
     repository: AppRepository,
     googleSignInHelper: GoogleSignInHelper,
+    pixelSocketClient: PixelSocketClient,
     modifier: Modifier = Modifier
 ) {
     val navController = rememberNavController()
@@ -33,7 +38,10 @@ fun AppNavigation(
         modifier = modifier
     ) {
         composable(Routes.HOME) {
-            HomeScreen(onButtonOneClick = { navController.navigate(Routes.LOGIN) })
+            HomeScreen(
+                onButtonOneClick = { navController.navigate(Routes.LOGIN) },
+                onButtonTwoClick = { navController.navigate(Routes.PIXELS) }
+            )
         }
 
         composable(Routes.LOGIN) {
@@ -47,6 +55,19 @@ fun AppNavigation(
                 onSignIn = viewModel::signIn,
                 onSignOut = viewModel::signOut,
                 onDismissError = viewModel::dismissError,
+                onBack = { navController.popBackStack() }
+            )
+        }
+
+        composable(Routes.PIXELS) {
+            // Scoped to this destination, so the socket opens on entry and is
+            // torn down when the user navigates away.
+            val viewModel: PixelArtViewModel = viewModel(
+                factory = PixelArtViewModel.factory(pixelSocketClient)
+            )
+
+            PixelArtScreen(
+                viewModel = viewModel,
                 onBack = { navController.popBackStack() }
             )
         }

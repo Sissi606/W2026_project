@@ -5,7 +5,7 @@
     <string name="home_title">CPEN 321 Project</string>
     <string name="home_subtitle">Each button works independently.</string>
     <string name="button_one">1. Login &amp; Server Info</string>
-    <string name="button_two">2. Coming soon</string>
+    <string name="button_two">2. Live Pixel Art</string>
     <string name="button_three">3. Coming soon</string>
 
     <!-- Login / info screen -->
@@ -29,4 +29,11 @@
     <string name="section_connection">Connection</string>
     <string name="section_clocks">Clocks</string>
     <string name="section_identity">Identity</string>
+
+    <!-- Pixel art (Button 2) -->
+    <string name="pixel_title">Live Pixel Art</string>
+    <string name="status_connecting">Connecting…</string>
+    <string name="status_live">Live</string>
+    <string name="status_reconnecting">Reconnecting…</string>
+    <string name="pixels_received">%1$d pixels</string>
 </resources>

@@ -24,6 +24,7 @@ class MainActivity : ComponentActivity() {
                     AppNavigation(
                         repository = app.repository,
                         googleSignInHelper = app.googleSignInHelper,
+                        pixelSocketClient = app.pixelSocketClient,
                         modifier = Modifier.padding(innerPadding)
                     )
                 }

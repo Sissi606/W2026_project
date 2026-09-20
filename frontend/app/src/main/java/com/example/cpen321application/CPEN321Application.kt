@@ -4,6 +4,7 @@ import android.app.Application
 import com.example.cpen321application.auth.GoogleSignInHelper
 import com.example.cpen321application.data.local.TokenStore
 import com.example.cpen321application.data.remote.ApiClient
+import com.example.cpen321application.data.remote.PixelSocketClient
 import com.example.cpen321application.data.repository.AppRepository
 
 /**
@@ -21,6 +22,9 @@ class CPEN321Application : Application() {
     lateinit var googleSignInHelper: GoogleSignInHelper
         private set
 
+    lateinit var pixelSocketClient: PixelSocketClient
+        private set
+
     override fun onCreate() {
         super.onCreate()
 
@@ -31,5 +35,8 @@ class CPEN321Application : Application() {
 
         repository = AppRepository(api, tokenStore)
         googleSignInHelper = GoogleSignInHelper(BuildConfig.GOOGLE_CLIENT_ID)
+
+        // Button 2 is independent of sign-in, so this client carries no auth.
+        pixelSocketClient = PixelSocketClient(BuildConfig.API_BASE_URL)
     }
 }
