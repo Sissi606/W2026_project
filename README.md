@@ -63,10 +63,38 @@ From the project root:
 cp backend/.env.example backend/.env
 ```
 
-Set at least:
-- `JWT_SECRET`: a long random string used to sign auth tokens.
-- `MONGODB_URI`: only needed for local development (default in `.env.example` assumes MongoDB on `localhost:27017`). Ignored when running via Docker Compose.
-- `PORT` (optional): defaults to `3000` if unset.
+The server refuses to start if a required variable is missing, and tells you which one.
+
+Required:
+- `JWT_SECRET`: a long random string used to sign session tokens. Generate one with
+  `node -e "console.log(require('crypto').randomBytes(48).toString('hex'))"`.
+- `GOOGLE_CLIENT_ID`: the **Web application** OAuth client ID (see [Google OAuth setup](#google-oauth-setup)). Must be the same value as the frontend's `GOOGLE_CLIENT_ID` in `local.properties`.
+
+Optional:
+- `DEVELOPER_FIRST_NAME` / `DEVELOPER_LAST_NAME`: your own name, which `GET /api/info/developer` reports and the app displays. Defaults to `First` / `Last`.
+- `SERVER_PUBLIC_IP`: skips the outbound public-IP lookup. Leave empty to have the server ask an external echo service (`api.ipify.org`) what address its traffic comes from.
+- `PORT`: defaults to `3000` if unset.
+- `MONGODB_URI`: not read by any code yet — login is stateless, and the identity travels inside the signed token. Kept for upcoming features. Ignored when running via Docker Compose.
+
+### API endpoints
+
+| Method | Path | Auth | Returns |
+| ------ | ---- | ---- | ------- |
+| `GET` | `/health` | — | `{ status }` |
+| `POST` | `/api/auth/google` | — | `{ token, user }` — verifies a Google ID token and issues a session token |
+| `GET` | `/api/info/server-ip` | Bearer | `{ serverIp, clientIp }` |
+| `GET` | `/api/info/server-time` | Bearer | `{ serverTime }` as `hh:mm:ss GMT±hh:mm` |
+| `GET` | `/api/info/developer` | Bearer | `{ firstName, lastName }` |
+
+Authenticated routes expect the session token from `/api/auth/google` in an `Authorization: Bearer <token>` header.
+
+### Tests
+
+```bash
+cd backend
+npm test          # jest, with coverage
+npm run typecheck
+```
 
 
 ### Option 1: Run locally
@@ -123,4 +151,25 @@ Set at least:
 
 ## Additional Setup
 
-_Please specify any other additional setup steps non-specific to either frontend nor backend_
+<a name="google-oauth-setup"></a>
+### Google OAuth setup
+
+Sign-in needs two OAuth clients in the same Google Cloud project. This is console work that cannot be scripted.
+
+1. In the [Google Cloud Console](https://console.cloud.google.com/), create (or pick) a project, then open **APIs & Services → OAuth consent screen**. Choose **External**, fill in the app name and support email, and add your own Google account under **Test users** — without this, sign-in fails for accounts outside the project.
+2. Open **APIs & Services → Credentials → Create Credentials → OAuth client ID** and create a **Web application** client. Copy its client ID into:
+   - `backend/.env` as `GOOGLE_CLIENT_ID`
+   - `frontend/local.properties` as `GOOGLE_CLIENT_ID`
+
+   Both sides use the *Web* client ID: the Android app requests an ID token with it as the audience, and the backend verifies that audience matches.
+3. Create a **second** OAuth client, type **Android**, with package name `com.example.cpen321application` and the SHA-1 of the keystore that signs the APK. This client's ID is never pasted anywhere — its existence is what authorizes the app to request tokens.
+
+   Debug keystore SHA-1:
+   ```bash
+   keytool -list -v -alias androiddebugkey \
+     -keystore ~/.android/debug.keystore \
+     -storepass android -keypass android | grep SHA1
+   ```
+   For a release APK, run the same command against your release keystore and add that SHA-1 as well — a debug-only fingerprint means sign-in breaks in the submitted APK.
+
+Neither `backend/.env` nor `frontend/local.properties` is committed, so every team member does steps 2 and 3's copying locally.
