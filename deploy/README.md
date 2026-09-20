@@ -79,11 +79,16 @@ cd backend
 npm ci
 npm run build
 
-sudo cp ~/W2026_project/deploy/cpen321-backend.service /etc/systemd/system/
-sudo systemctl daemon-reload
-sudo systemctl enable --now cpen321-backend
-systemctl status cpen321-backend --no-pager
+sudo -E ./deploy/install-service.sh
 ```
+
+The installer resolves the path to `node` itself and writes the unit. Hard-coding
+`/usr/bin/npm` fails with `status=203/EXEC` on a machine where node came from
+nvm, because systemd does not read your shell profile.
+
+Order matters: `npm ci` must run **after** `git pull`. Pulling updates
+`package.json` but never touches `node_modules`, so installing first leaves new
+dependencies missing and the build fails.
 
 This replaces `npm run dev`. A process launched from an SSH session dies when
 that session ends, so the demo would stop the moment the browser tab closed;
