@@ -2,9 +2,9 @@
 sdk.dir=/path/to/Android/sdk
 
 # Backend base URL baked into the APK at build time.
-API_BASE_URL=http://10.0.2.2:3000
+API_BASE_URL=https://34-29-207-92.sslip.io
 
 # Google OAuth client ID.
-GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_ID=702655090741-8k7jr19bak6bsqhlu6cgs7hfn5gk7miv.apps.googleusercontent.com
 
 # Other API keys, secrets, and configurations
