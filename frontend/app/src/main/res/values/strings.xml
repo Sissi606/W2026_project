@@ -1,3 +1,32 @@
 <resources>
     <string name="app_name">CPEN321 Application</string>
+
+    <!-- Home -->
+    <string name="home_title">CPEN 321 Project</string>
+    <string name="home_subtitle">Each button works independently.</string>
+    <string name="button_one">1. Login &amp; Server Info</string>
+    <string name="button_two">2. Coming soon</string>
+    <string name="button_three">3. Coming soon</string>
+
+    <!-- Login / info screen -->
+    <string name="login_title">Login &amp; Server Info</string>
+    <string name="sign_in_with_google">Sign in with Google</string>
+    <string name="sign_in_prompt">Sign in to connect to the backend over HTTPS and load server details.</string>
+    <string name="signing_in">Signing in…</string>
+    <string name="sign_out">Sign out</string>
+    <string name="refresh">Refresh</string>
+    <string name="back">Back</string>
+    <string name="dismiss">Dismiss</string>
+
+    <!-- Field labels -->
+    <string name="label_server_ip">Server IP address</string>
+    <string name="label_client_ip">Client IP address</string>
+    <string name="label_server_time">Server local time</string>
+    <string name="label_client_time">Client local time</string>
+    <string name="label_developer_name">Developer name</string>
+    <string name="label_account_name">Signed-in Google account</string>
+
+    <string name="section_connection">Connection</string>
+    <string name="section_clocks">Clocks</string>
+    <string name="section_identity">Identity</string>
 </resources>
