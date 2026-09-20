@@ -29,6 +29,13 @@ data class ServerTimeResponse(val serverTime: String)
 @Serializable
 data class DeveloperResponse(val firstName: String, val lastName: String)
 
+@Serializable
+data class RandomFactResponse(
+    val text: String,
+    val source: String,
+    val sourceUrl: String
+)
+
 /** Shape of the backend's error responses: `{ "error": "..." }`. */
 @Serializable
 data class ApiErrorResponse(val error: String)

@@ -3,6 +3,7 @@ package com.example.cpen321application.data.repository
 import com.example.cpen321application.data.local.TokenStore
 import com.example.cpen321application.data.remote.ApiService
 import com.example.cpen321application.data.remote.GoogleLoginRequest
+import com.example.cpen321application.data.remote.RandomFactResponse
 import com.example.cpen321application.data.remote.UserDto
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
@@ -53,6 +54,9 @@ class AppRepository(
             developerLastName = developer.lastName
         )
     }
+
+    /** Button 3's surprise. Needs no session, by design. */
+    suspend fun loadRandomFact(): RandomFactResponse = api.getRandomFact()
 
     fun signOut() = tokenStore.clear()
 

@@ -21,4 +21,8 @@ interface ApiService {
 
     @GET("api/info/developer")
     suspend fun getDeveloper(): DeveloperResponse
+
+    /** Button 3's surprise. Unauthenticated, like the pixel stream. */
+    @GET("api/surprise/fact")
+    suspend fun getRandomFact(): RandomFactResponse
 }

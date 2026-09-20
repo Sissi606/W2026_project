@@ -86,8 +86,9 @@ Optional:
 | `GET` | `/api/info/server-time` | Bearer | `{ serverTime }` as `hh:mm:ss GMT±hh:mm` |
 | `GET` | `/api/info/developer` | Bearer | `{ firstName, lastName }` |
 | `WS` | `/ws/pixels` | — | Relays the course pixel stream verbatim (Button 2) |
+| `GET` | `/api/surprise/fact` | — | `{ text, source, sourceUrl }` — random fact for Button 3 |
 
-`/ws/pixels` is deliberately unauthenticated: the three buttons must work
+`/ws/pixels` and `/api/surprise/fact` are deliberately unauthenticated: the three buttons must work
 independently, so Button 2 cannot depend on Button 1 having been used.
 
 Authenticated routes expect the session token from `/api/auth/google` in an `Authorization: Bearer <token>` header.

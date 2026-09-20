@@ -4,6 +4,7 @@ import express, { type Express } from 'express';
 import { errorHandler, notFoundHandler } from './middleware/error';
 import { authRouter } from './routes/auth.routes';
 import { infoRouter } from './routes/info.routes';
+import { surpriseRouter } from './routes/surprise.routes';
 import './types/auth';
 
 export function createApp(): Express {
@@ -23,6 +24,7 @@ export function createApp(): Express {
 
   app.use('/api/auth', authRouter);
   app.use('/api/info', infoRouter);
+  app.use('/api/surprise', surpriseRouter);
 
   app.use(notFoundHandler);
   app.use(errorHandler);

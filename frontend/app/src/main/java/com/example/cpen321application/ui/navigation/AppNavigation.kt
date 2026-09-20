@@ -16,11 +16,14 @@ import com.example.cpen321application.ui.login.LoginScreen
 import com.example.cpen321application.ui.login.LoginViewModel
 import com.example.cpen321application.ui.pixels.PixelArtScreen
 import com.example.cpen321application.ui.pixels.PixelArtViewModel
+import com.example.cpen321application.ui.timer.TimerScreen
+import com.example.cpen321application.ui.timer.TimerViewModel
 
 object Routes {
     const val HOME = "home"
     const val LOGIN = "login"
     const val PIXELS = "pixels"
+    const val TIMER = "timer"
 }
 
 @Composable
@@ -40,7 +43,8 @@ fun AppNavigation(
         composable(Routes.HOME) {
             HomeScreen(
                 onButtonOneClick = { navController.navigate(Routes.LOGIN) },
-                onButtonTwoClick = { navController.navigate(Routes.PIXELS) }
+                onButtonTwoClick = { navController.navigate(Routes.PIXELS) },
+                onButtonThreeClick = { navController.navigate(Routes.TIMER) }
             )
         }
 
@@ -68,6 +72,23 @@ fun AppNavigation(
 
             PixelArtScreen(
                 viewModel = viewModel,
+                onBack = { navController.popBackStack() }
+            )
+        }
+
+        composable(Routes.TIMER) {
+            val viewModel: TimerViewModel = viewModel(
+                factory = TimerViewModel.factory(repository)
+            )
+            val state by viewModel.uiState.collectAsStateWithLifecycle()
+
+            TimerScreen(
+                state = state,
+                onMinutesChange = viewModel::onMinutesChange,
+                onSecondsChange = viewModel::onSecondsChange,
+                onStart = viewModel::start,
+                onReset = viewModel::reset,
+                onAnotherFact = viewModel::reveal,
                 onBack = { navController.popBackStack() }
             )
         }

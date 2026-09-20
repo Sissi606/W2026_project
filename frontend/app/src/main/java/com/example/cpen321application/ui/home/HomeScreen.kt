@@ -26,6 +26,7 @@ import com.example.cpen321application.R
 fun HomeScreen(
     onButtonOneClick: () -> Unit,
     onButtonTwoClick: () -> Unit,
+    onButtonThreeClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -60,8 +61,8 @@ fun HomeScreen(
         )
         HomeButton(
             label = stringResource(R.string.button_three),
-            onClick = {},
-            enabled = false,
+            onClick = onButtonThreeClick,
+            enabled = true,
             testTag = "button_three"
         )
     }
